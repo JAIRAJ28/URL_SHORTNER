@@ -1,1 +1,17 @@
-// DATABASE_URL='postgresql://neondb_owner:npg_LnSyKc0QFiM7@ep-bitter-tree-ah0x9e3t-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+import { Pool } from "pg";
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not set");
+}
+
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+export async function query<T = unknown>(
+  text: string,
+  params?: any[]
+): Promise<{ rows: T[] }> {
+  const result = await pool.query(text, params);
+  return { rows: result.rows as T[] };
+}
