@@ -11,15 +11,15 @@ export  function generateRandomCode(): string {
   return result;
 }
 
-export function isValidCode(url: string): boolean {
-  const pattern = new RegExp(
-    "^(https?:\\/\\/)?" + // protocol
-    "(([\\da-z.-]+)\\.([a-z.]{2,6})|" + 
-    "(([0-9]{1,3}\\.){3}[0-9]{1,3}))" + 
-    "([\\/\\w .-]*)*\\/?$", "i"
-  );
-  return pattern.test(url);
+// export function isValidCode(code: string): boolean {
+//   const pattern = /^[A-Za-z0-9]{6,8}$/;
+//   return pattern.test(code);
+// }
+export function isValidCode(code: string): boolean {
+  const pattern = /^[A-Za-z0-9]+$/;
+  return pattern.test(code);
 }
+
 
 export function isValidUrl(url:string):boolean{
   try {
@@ -32,10 +32,12 @@ export function isValidUrl(url:string):boolean{
 }
 
 export async function getLinkByCode(code: string): Promise<linktable | null> {
+  console.log(code,"the_code")
   const { rows } = await query<linktable>(
     `SELECT * FROM links WHERE code = $1`,
     [code]
   );
+  console.log(rows,"check_the_rowsss")
   return rows[0] ?? null;
 }
 

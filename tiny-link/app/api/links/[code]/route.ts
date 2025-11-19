@@ -1,14 +1,14 @@
 import { deleteLinkByCode, getLinkByCode, isValidCode } from "@/lib/queries";
 import { NextResponse } from "next/server";
 
-
 type Params = {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 };
 
+export async function GET(_req: Request, ctx: Params) {
+  const { code } = await ctx.params;
 
-export async function GET(_req: Request, { params }: Params) {
-  const { code } = params;
+  console.log(code, "code____");
 
   if (!isValidCode(code)) {
     return NextResponse.json(
@@ -16,14 +16,17 @@ export async function GET(_req: Request, { params }: Params) {
       { status: 400 }
     );
   }
+
   try {
     const link = await getLinkByCode(code);
+
     if (!link) {
       return NextResponse.json(
         { error: "Not found" },
         { status: 404 }
       );
     }
+
     return NextResponse.json(link, { status: 200 });
   } catch (err) {
     console.error("error_in_getLinkByCode", err);
@@ -34,8 +37,8 @@ export async function GET(_req: Request, { params }: Params) {
   }
 }
 
-export async function DELETE(_req: Request, { params }: Params) {
-  const { code } = params;
+export async function DELETE(_req: Request, ctx: Params) {
+  const { code } = await ctx.params;
   if (!isValidCode(code)) {
     return NextResponse.json(
       { error: "Invalid code" },
@@ -62,4 +65,3 @@ export async function DELETE(_req: Request, { params }: Params) {
     );
   }
 }
-

@@ -67,7 +67,7 @@ const LinkForm = ({ onCreated }: LinkFormProps) => {
           type="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://example.com/very/long/url"
+          placeholder="Put your url here !."
           className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -90,7 +90,6 @@ const LinkForm = ({ onCreated }: LinkFormProps) => {
           </code>
         </p>
       </div>
-
       {error && (
         <p className="text-sm text-red-600" role="alert">
           {error}
@@ -101,7 +100,6 @@ const LinkForm = ({ onCreated }: LinkFormProps) => {
           {success}
         </p>
       )}
-
       <button
         type="submit"
         disabled={loading}
